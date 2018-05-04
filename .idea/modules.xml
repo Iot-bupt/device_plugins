@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/device_plugins.iml" filepath="$PROJECT_DIR$/device_plugins.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MailPlugin.iml" filepath="$PROJECT_DIR$/MailPlugin.iml" />
     </modules>
   </component>
 </project>
