@@ -2,6 +2,7 @@ package cn.bupt.device.controller;
 
 
 import cn.bupt.device.data.MailData;
+import cn.bupt.device.pluginmanager.Plugin;
 import cn.bupt.device.sendEmailMethod.SendMail;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/plugin")
+@Plugin(pluginInfo = "mailplugin", registerAddr = "10.108.218.108:2181")
 @Slf4j
 public class PluginController {
 
