@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="device_plugins" />
+        <module name="MailPlugin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="device_plugins" target="1.8" />
+      <module name="MailPlugin" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

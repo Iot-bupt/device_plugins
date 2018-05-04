@@ -1,19 +1,32 @@
 package cn.bupt.device.controller;
 
 
+import cn.bupt.device.data.MailData;
 import cn.bupt.device.sendEmailMethod.SendMail;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/plugin")
+@Slf4j
 public class PluginController {
+
     @RequestMapping(value = "/sendMail", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
-    public void sendMail(@RequestParam("to[]") String[] to, @RequestParam("subject") String subject, @RequestParam("text") String text) throws Exception {
+    @ResponseBody
+    public void sendMail(@RequestBody String jsonStr) throws Exception {
+        JsonObject jsonObj = (JsonObject)new JsonParser().parse(jsonStr);
+        MailData mailData = new MailData(jsonObj);
+
+        List<String> toList=mailData.getTo();
+        String[] to = new String[toList.size()];
+        toList.toArray(to);
+
         SendMail sendMail=new SendMail();
-        String s=sendMail.sendEmail(to,subject,text);
+        String s=sendMail.sendEmail(to,mailData.getSubject(),mailData.getText());
     }
 }
 
