@@ -7,7 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="device_plugins" />
-        <module name="MailPlugin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
