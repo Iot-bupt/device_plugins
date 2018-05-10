@@ -7,6 +7,7 @@ import cn.bupt.device.sendEmailMethod.SendMail;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,9 +18,12 @@ import java.util.List;
 @Slf4j
 public class PluginController {
 
+    @Autowired
+    SendMail sendMail;
+
     @RequestMapping(value = "/sendMail", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public void sendMail(@RequestBody String jsonStr) throws Exception {
+    public String sendMail(@RequestBody String jsonStr) throws Exception {
         JsonObject jsonObj = (JsonObject)new JsonParser().parse(jsonStr);
         MailData mailData = new MailData(jsonObj);
 
@@ -27,8 +31,22 @@ public class PluginController {
         String[] to = new String[toList.size()];
         toList.toArray(to);
 
-        SendMail sendMail=new SendMail();
         String s=sendMail.sendEmail(to,mailData.getSubject(),mailData.getText());
+        return "发送成功";
+    }
+
+    @RequestMapping(value = "/active", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String setActive(){
+        sendMail.setState("ACTIVE");
+        return "Plugin active";
+    }
+
+    @RequestMapping(value = "/suspend", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String setSuspend(){
+        sendMail.setState("SUSPEND");
+        return "Plugin suspended";
     }
 }
 
