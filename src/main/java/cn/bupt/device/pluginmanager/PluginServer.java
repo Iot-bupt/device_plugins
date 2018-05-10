@@ -21,14 +21,14 @@ public class PluginServer implements ApplicationContextAware, InitializingBean {
     SendMail sendMail;
 
     private String pluginInfo ;
+    private String detailInfo ;
 
     private PluginRegistry pluginRegistry ;
 
-    private String states;
     @Override
     public void afterPropertiesSet() throws Exception {
         if (pluginRegistry != null) {
-            pluginRegistry.register(pluginInfo,states); // 注册服务地址
+            pluginRegistry.register(pluginInfo,detailInfo); // 注册服务地址
         }
     }
 
@@ -42,8 +42,10 @@ public class PluginServer implements ApplicationContextAware, InitializingBean {
                 Class<?> aClass = serviceBean.getClass();
                 String pluginInfo = aClass.getAnnotation(Plugin.class).pluginInfo();
                 String registerAddr = aClass.getAnnotation(Plugin.class).registerAddr() ;
+                String detailInfo = aClass.getAnnotation(Plugin.class).detailInfo() ;
+
                 this.pluginInfo = pluginInfo ;
-                this.states = sendMail.getState();
+                this.detailInfo = detailInfo ;
 
                 pluginRegistry = new PluginRegistry(registerAddr) ;
             }

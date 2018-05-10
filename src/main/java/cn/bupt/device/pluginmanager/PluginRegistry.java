@@ -19,17 +19,23 @@ public class PluginRegistry {
         LOGGER.debug("connect zookeeper");
     }
 
-    public void register(String serviceName, String states) {
+    public void register(String serviceName, String detailInfo) {
+        if (detailInfo == null || detailInfo.equals("")) detailInfo = "None" ;
+
         // 创建 registry 节点（持久）
         String registryPath = Constant.ZK_REGISTRY_PATH;
         if (!zkClient.exists(registryPath)) {
             zkClient.createPersistent(registryPath);
             LOGGER.debug("create registry node: {}", registryPath);
         }
+
         // 创建 servicePath 节点（临时）
-        String servicePath = registryPath + "/" + serviceName+"/"+states;
+        String servicePath = registryPath + "/" + serviceName;
         if (!zkClient.exists(servicePath)) {
             zkClient.createEphemeral(servicePath);
         }
+
+        // 向临时节点写入信息
+        zkClient.writeData(servicePath, detailInfo);
     }
 }

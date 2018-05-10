@@ -15,6 +15,7 @@ import java.lang.annotation.Target;
 @Component // for spring scanning.
 public @interface Plugin {
 
-    String pluginInfo() ; // 在使用这个注解的时候，不用显示的给value赋值
-    String registerAddr() ; // 向这个地址注册;
+    String pluginInfo() ;                   // 在使用这个注解的时候，不用显示的给value赋值
+    String registerAddr() ;                 // 向这个地址注册;
+    String detailInfo() default "None" ;    // 插件的详细信息
 }

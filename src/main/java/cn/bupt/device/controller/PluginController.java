@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/plugin")
-@Plugin(pluginInfo = "MailPlugin", registerAddr = "10.108.218.108:2181")
+@Plugin(pluginInfo = "MailPlugin", registerAddr = "10.108.218.108:2181", detailInfo = "hahahaha|dfadsfasdfasdf|")
 @Slf4j
 public class PluginController {
 
