@@ -40,6 +40,7 @@ public class PluginServer implements ApplicationContextAware, InitializingBean {
         if (MapUtils.isNotEmpty(beansWithAnnotation)) {
             for (Object serviceBean :
                     beansWithAnnotation.values()) {
+                // 得到类上的Plugin标签[因为cglib，可能在父类上]
                 Class<?> aClass = null ;
                 if (serviceBean.getClass().equals(PluginController.class)) {
                     aClass = serviceBean.getClass() ;
