@@ -4,6 +4,7 @@ package cn.bupt.device.controller;
 import cn.bupt.device.data.MailData;
 import cn.bupt.device.pluginmanager.Plugin;
 import cn.bupt.device.sendEmailMethod.SendMail;
+import cn.bupt.device.sendEmailMethod.Timer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("PluginController")
 @RequestMapping("/api/plugin")
 @Plugin(pluginInfo = "MailPlugin", registerAddr = "10.108.218.108:2181", detailInfo = "hahahaha|dfadsfasdfasdf|")
 @Slf4j
@@ -21,6 +22,7 @@ public class PluginController {
     @Autowired
     SendMail sendMail;
 
+    @Timer
     @RequestMapping(value = "/sendMail", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public String sendMail(@RequestBody String jsonStr) throws Exception {

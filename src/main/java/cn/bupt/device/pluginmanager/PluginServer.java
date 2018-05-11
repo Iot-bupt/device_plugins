@@ -1,5 +1,6 @@
 package cn.bupt.device.pluginmanager;
 
+import cn.bupt.device.controller.PluginController;
 import cn.bupt.device.sendEmailMethod.SendMail;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.BeansException;
@@ -39,7 +40,13 @@ public class PluginServer implements ApplicationContextAware, InitializingBean {
         if (MapUtils.isNotEmpty(beansWithAnnotation)) {
             for (Object serviceBean :
                     beansWithAnnotation.values()) {
-                Class<?> aClass = serviceBean.getClass();
+                Class<?> aClass = null ;
+                if (serviceBean.getClass().equals(PluginController.class)) {
+                    aClass = serviceBean.getClass() ;
+                } else if (serviceBean.getClass().getSuperclass().equals(PluginController.class)) {
+                    aClass = serviceBean.getClass().getSuperclass() ;
+                }
+
                 String pluginInfo = aClass.getAnnotation(Plugin.class).pluginInfo();
                 String registerAddr = aClass.getAnnotation(Plugin.class).registerAddr() ;
                 String detailInfo = aClass.getAnnotation(Plugin.class).detailInfo() ;

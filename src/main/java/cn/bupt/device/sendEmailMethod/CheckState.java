@@ -15,7 +15,6 @@ public class CheckState {
 
     @Pointcut("@annotation(cn.bupt.device.sendEmailMethod.Timer)")
     public void pointcut() {
-
     }
 
     @Around("pointcut()")
