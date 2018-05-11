@@ -11,9 +11,11 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 @RestController("PluginController")
 @RequestMapping("/api/plugin")
@@ -33,7 +35,7 @@ public class PluginController {
             "}", required = true)
     @RequestMapping(value = "/sendMail", method = RequestMethod.POST)
     @ResponseBody
-    public String sendMail(@RequestBody String jsonStr) throws Exception {
+    public Future<String> sendMail(@RequestBody String jsonStr) throws Exception {
         JsonObject jsonObj = (JsonObject)new JsonParser().parse(jsonStr);
         MailData mailData = new MailData(jsonObj);
 
@@ -42,7 +44,7 @@ public class PluginController {
         toList.toArray(to);
 
         String s=sendMail.sendEmail(to,mailData.getSubject(),mailData.getText());
-        return "发送成功";
+        return new AsyncResult<String>("发送成功");
     }
 
     @RequestMapping(value = "/active", method = RequestMethod.POST)

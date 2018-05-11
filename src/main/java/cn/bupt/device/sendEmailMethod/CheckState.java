@@ -5,6 +5,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -24,7 +25,7 @@ public class CheckState {
             return point.proceed();
         }
         else{
-            throw new Exception("This plugin is suspended");
+            return new AsyncResult<String>("邮件插件暂停中");
         }
 
     }

@@ -2,6 +2,7 @@ package cn.bupt.device.sendEmailMethod;
 
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
@@ -16,7 +17,8 @@ public class SendMail extends State{
 
     public static final String DEFALUT_ENCODING = "UTF-8";
 
-    @Timer
+    //@Timer
+    @Async
     public String sendEmail(String[] to,String subject,String text) throws Exception {
         JavaMailSenderImpl sender =initJavaMailSender();
        //String[] to={"liyou@bupt.edu.cn"};
