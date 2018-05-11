@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/plugin")
-@Plugin(pluginInfo = "MailPlugin", registerAddr = "10.108.218.108:2181", detailInfo = "hahahaha|dfadsfasdfasdf|")
+@Plugin(pluginInfo = "MailPlugin", registerAddr = "10.108.218.108:2181", detailInfo = "10.108.218.108:8300|use for sending Email")
 @Slf4j
 public class PluginController {
 
@@ -47,6 +47,12 @@ public class PluginController {
     public String setSuspend(){
         sendMail.setState("SUSPEND");
         return "Plugin suspended";
+    }
+
+    @RequestMapping(value = "/state", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String getState(){
+        return sendMail.getState();
     }
 }
 
