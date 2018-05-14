@@ -5,6 +5,7 @@ import cn.bupt.device.data.MailData;
 import cn.bupt.device.pluginmanager.Plugin;
 import cn.bupt.device.sendEmailMethod.SendMail;
 import cn.bupt.device.sendEmailMethod.Timer;
+import com.codahale.metrics.Counter;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -25,6 +27,9 @@ public class PluginController {
 
     @Autowired
     SendMail sendMail;
+
+    @Resource
+    private Counter pendingJobs;
 
     @Timer
     @ApiOperation(value = "send a mail", notes = "send a mail api")
@@ -42,6 +47,8 @@ public class PluginController {
         List<String> toList=mailData.getTo();
         String[] to = new String[toList.size()];
         toList.toArray(to);
+
+        pendingJobs.inc();
 
         String s=sendMail.sendEmail(to,mailData.getSubject(),mailData.getText());
         return new AsyncResult<String>("发送成功");

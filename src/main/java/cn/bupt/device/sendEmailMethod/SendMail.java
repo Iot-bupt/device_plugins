@@ -5,6 +5,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import com.codahale.metrics.Timer;
+
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
@@ -17,9 +20,14 @@ public class SendMail extends State{
 
     public static final String DEFALUT_ENCODING = "UTF-8";
 
+    @Resource
+    private Timer responses;
+
     //@Timer
     @Async
     public String sendEmail(String[] to,String subject,String text) throws Exception {
+        final Timer.Context context = responses.time();
+
         JavaMailSenderImpl sender =initJavaMailSender();
        //String[] to={"liyou@bupt.edu.cn"};
         try {
@@ -27,6 +35,9 @@ public class SendMail extends State{
             return "发送成功";
         }catch (Exception e){
             return "发送失败";
+        }
+        finally{
+            context.stop();
         }
     }
 
