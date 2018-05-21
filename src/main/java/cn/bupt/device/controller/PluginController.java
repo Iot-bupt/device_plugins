@@ -21,7 +21,7 @@ import java.util.concurrent.Future;
 
 @RestController("PluginController")
 @RequestMapping("/api/plugin")
-@Plugin(pluginInfo = "MailPlugin", registerAddr = "10.108.218.108:2181", detailInfo = "10.108.218.108:8300|use for sending Email")
+@Plugin(pluginInfo = "MailPlugin", registerAddr = "39.104.186.210:2181", detailInfo = "172.24.32.168:8300|use for sending Email")
 @Slf4j
 public class PluginController {
 
