@@ -1,4 +1,4 @@
 package cn.bupt.device.sendEmailMethod;
 
-public @interface Timer {
+public @interface ConfirmActive {
 }

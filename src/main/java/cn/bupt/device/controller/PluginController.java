@@ -1,11 +1,15 @@
 package cn.bupt.device.controller;
 
 
+import cn.bupt.device.common.JsonUtils;
 import cn.bupt.device.data.MailData;
 import cn.bupt.device.pluginmanager.Plugin;
 import cn.bupt.device.sendEmailMethod.SendMail;
-import cn.bupt.device.sendEmailMethod.Timer;
+import cn.bupt.device.sendEmailMethod.ConfirmActive;
 import com.codahale.metrics.Counter;
+import com.codahale.metrics.Metric;
+import com.codahale.metrics.MetricFilter;
+import com.codahale.metrics.MetricRegistry;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.swagger.annotations.ApiImplicitParam;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
 import java.util.concurrent.Future;
 
 @RestController("PluginController")
@@ -28,10 +34,16 @@ public class PluginController {
     @Autowired
     SendMail sendMail;
 
-    @Resource
-    private Counter pendingJobs;
+    private Counter pendingJobs; // todo ?
 
-    @Timer
+    @Resource
+    private MetricRegistry metrics ;
+
+    public PluginController() {
+        pendingJobs = metrics.counter(PluginController.class.getName() + " invoke counter") ;
+    }
+
+    @ConfirmActive
     @ApiOperation(value = "send a mail", notes = "send a mail api")
     @ApiImplicitParam(name = "jsonStr", value = "{\n" +
             "\t\"to\": [\"liyou@bupt.edu.cn\"],\n" +
@@ -72,6 +84,13 @@ public class PluginController {
     @ResponseBody
     public String getState(){
         return sendMail.getState();
+    }
+
+    @RequestMapping(value = "/matrics/count", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String getMatricsCount() {
+        Map<String, Counter> counters = metrics.getCounters((name, metrics) -> name.equals(PluginController.class.getName()));
+        return "todo" ;
     }
 }
 

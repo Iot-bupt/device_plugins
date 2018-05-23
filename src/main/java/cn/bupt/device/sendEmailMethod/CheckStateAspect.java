@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class CheckState {
+public class CheckStateAspect {
     @Autowired
     SendMail sendMail;
 
-    @Pointcut("@annotation(cn.bupt.device.sendEmailMethod.Timer)")
+    @Pointcut("@annotation(cn.bupt.device.sendEmailMethod.ConfirmActive)")
     public void pointcut() {
     }
 
