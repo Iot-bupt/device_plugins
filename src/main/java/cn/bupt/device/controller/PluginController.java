@@ -20,9 +20,9 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.concurrent.Future;
 
 @RestController("PluginController")
@@ -30,17 +30,18 @@ import java.util.concurrent.Future;
 @Plugin(pluginInfo = "MailPlugin", registerAddr = "39.104.186.210:2181", detailInfo = "172.24.32.168:8300|use for sending Email")
 @Slf4j
 public class PluginController {
+    private final String controllerName = PluginController.class.getName() ;
 
     @Autowired
-    SendMail sendMail;
+    private SendMail sendMail;
 
-    private Counter pendingJobs; // todo ?
+    private MetricRegistry metrics ;
+    private Counter pendingJobs ;
 
     @Resource
-    private MetricRegistry metrics ;
-
-    public PluginController() {
-        pendingJobs = metrics.counter(PluginController.class.getName() + " invoke counter") ;
+    public void setMetrics(MetricRegistry metrics) {
+        this.metrics = metrics ;
+        this.pendingJobs = this.metrics.counter(PluginController.class.getName()) ;
     }
 
     @ConfirmActive
@@ -89,8 +90,17 @@ public class PluginController {
     @RequestMapping(value = "/matrics/count", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public String getMatricsCount() {
-        Map<String, Counter> counters = metrics.getCounters((name, metrics) -> name.equals(PluginController.class.getName()));
-        return "todo" ;
+        HashMap<String, Long> result = new HashMap<>() ;
+        Map<String, Counter> counters = metrics.getCounters(
+                (name, metrics) -> (name.equals(controllerName))?(true):(false)
+        );
+        counters.forEach(
+                (k, v) -> {
+                    result.put(k, v.getCount()) ;
+                }
+        );
+
+        return JsonUtils.map2json(result).toString() ;
     }
 }
 
