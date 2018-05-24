@@ -5,8 +5,8 @@ import cn.bupt.device.common.JsonUtils;
 import cn.bupt.device.common.ZKConstant;
 import cn.bupt.device.data.MailData;
 import cn.bupt.device.pluginmanager.Plugin;
-import cn.bupt.device.sendEmailMethod.SendMail;
 import cn.bupt.device.sendEmailMethod.ConfirmActive;
+import cn.bupt.device.sendEmailMethod.SendMail;
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.MetricRegistry;
 import com.google.gson.JsonObject;
@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -36,6 +37,10 @@ public class PluginController {
 
     private MetricRegistry metrics ;
     private Counter pendingJobs ;
+
+    @Autowired
+    WebApplicationContext applicationContext ;
+
     @Resource
     public void setMetrics(MetricRegistry metrics) {
         this.metrics = metrics ;
