@@ -2,6 +2,7 @@ package cn.bupt.device.controller;
 
 
 import cn.bupt.device.common.JsonUtils;
+import cn.bupt.device.common.ZKConstant;
 import cn.bupt.device.data.MailData;
 import cn.bupt.device.pluginmanager.Plugin;
 import cn.bupt.device.sendEmailMethod.SendMail;
@@ -25,7 +26,7 @@ import java.util.concurrent.Future;
 
 @RestController("PluginController")
 @RequestMapping("/api/plugin")
-@Plugin(pluginInfo = "MailPlugin", registerAddr = "39.104.186.210:2181", detailInfo = "172.24.32.168:8300|use for sending Email")
+@Plugin(pluginInfo = "MailPlugin", registerAddr = ZKConstant.ZK_ADDRESS, detailInfo = "172.24.32.168:8300|use for sending Email")
 @Slf4j
 public class PluginController {
     private final String controllerName = PluginController.class.getName() ;
@@ -35,7 +36,6 @@ public class PluginController {
 
     private MetricRegistry metrics ;
     private Counter pendingJobs ;
-
     @Resource
     public void setMetrics(MetricRegistry metrics) {
         this.metrics = metrics ;
@@ -85,7 +85,7 @@ public class PluginController {
         return sendMail.getState();
     }
 
-    @RequestMapping(value = "/matrics/count", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/details", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public String getMatricsCount() {
         HashMap<String, Long> result = new HashMap<>() ;
