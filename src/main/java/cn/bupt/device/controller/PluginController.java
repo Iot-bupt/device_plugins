@@ -17,11 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Future;
 
 @RestController("PluginController")
@@ -34,12 +35,16 @@ public class PluginController {
     @Autowired
     private SendMail sendMail;
 
+    @Autowired
+    WebApplicationContext applicationContext;
+
     private MetricRegistry metrics ;
     private Counter pendingJobs ;
-    @Resource
+
+    @Autowired
     public void setMetrics(MetricRegistry metrics) {
         this.metrics = metrics ;
-        this.pendingJobs = this.metrics.counter(PluginController.class.getName()) ;
+        this.pendingJobs = this.metrics.counter(controllerName) ;
     }
 
     @ConfirmActive
@@ -85,9 +90,9 @@ public class PluginController {
         return sendMail.getState();
     }
 
-    @RequestMapping(value = "/details", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/metrics", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public String getMatricsCount() {
+    public String getMetrics() {
         HashMap<String, Long> result = new HashMap<>() ;
         Map<String, Counter> counters = metrics.getCounters(
                 (name, metrics) -> (name.equals(controllerName))?(true):(false)
@@ -99,6 +104,24 @@ public class PluginController {
         );
 
         return JsonUtils.map2json(result).toString() ;
+    }
+
+    @RequestMapping(value = "/allUrls", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public List<String> getAllUrls(){
+        RequestMappingHandlerMapping mapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
+        //获取url与类和方法的对应信息
+        Map<RequestMappingInfo, org.springframework.web.method.HandlerMethod> map = mapping.getHandlerMethods();
+        List<String> urlList = new ArrayList<>();
+        for (RequestMappingInfo info : map.keySet()){
+            //获取url的Set集合，一个方法可能对应多个url
+            Set<String> patterns = info.getPatternsCondition().getPatterns();
+            for (String url : patterns){
+                if (url.startsWith("/api"))
+                urlList.add(url);
+            }
+        }
+        return urlList;
     }
 }
 

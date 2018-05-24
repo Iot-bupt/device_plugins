@@ -23,13 +23,11 @@ public class SendMail extends State{
     @Resource
     private Timer responses;
 
-    //@Timer
     @Async
     public String sendEmail(String[] to,String subject,String text) throws Exception {
         final Timer.Context context = responses.time();
 
         JavaMailSenderImpl sender =initJavaMailSender();
-       //String[] to={"liyou@bupt.edu.cn"};
         try {
             sendTextWithHtml(sender, to, subject, text);
             return "发送成功";

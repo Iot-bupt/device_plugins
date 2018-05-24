@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
  * Created by tangjialiang on 2017/12/19.
  *
  */
-
 @SpringBootApplication
 @EnableAsync
 public class Application {

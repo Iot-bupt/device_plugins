@@ -17,7 +17,6 @@ public class MailData implements Serializable{
     private final List<String> to=new ArrayList<>();
 
     public MailData(JsonObject jsonObj) {
-        int i=0;
         this.jsonObj = jsonObj ;
         this.subject = jsonObj.get("subject").getAsString() ;
         this.text = jsonObj.get("text").getAsString() ;

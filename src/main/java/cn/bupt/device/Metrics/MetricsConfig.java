@@ -44,17 +44,6 @@ public class MetricsConfig {
     }
 
     /**
-     * 自定义单位
-     *
-     * @param metrics
-     * @return
-     */
-    //@Bean
-    //public ListManager listManager(MetricRegistry metrics) {
-    //    return new ListManager(metrics);
-    //}
-
-    /**
      * TPS 计算器
      *
      * @param metrics
