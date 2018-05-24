@@ -9,7 +9,6 @@ import java.util.Map;
  * Created by tangjialiang on 2018/5/24.
  */
 public class JsonUtils {
-    // todo
     private JsonUtils() {}
 
     public static JsonObject map2json(Map<String, Long> map) {

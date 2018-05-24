@@ -7,8 +7,6 @@ import cn.bupt.device.pluginmanager.Plugin;
 import cn.bupt.device.sendEmailMethod.SendMail;
 import cn.bupt.device.sendEmailMethod.ConfirmActive;
 import com.codahale.metrics.Counter;
-import com.codahale.metrics.Metric;
-import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
