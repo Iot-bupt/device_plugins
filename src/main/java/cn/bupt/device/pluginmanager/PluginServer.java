@@ -50,6 +50,7 @@ public class PluginServer implements ApplicationContextAware, InitializingBean {
 
                 String pluginInfo = aClass.getAnnotation(Plugin.class).pluginInfo();
                 String registerAddr = aClass.getAnnotation(Plugin.class).registerAddr() ;
+
                 String detailInfo = aClass.getAnnotation(Plugin.class).detailInfo() ;
 
                 this.pluginInfo = pluginInfo ;
