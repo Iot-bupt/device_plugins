@@ -10,6 +10,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 /**
@@ -51,7 +53,14 @@ public class PluginServer implements ApplicationContextAware, InitializingBean {
                 String pluginInfo = aClass.getAnnotation(Plugin.class).pluginInfo();
                 String registerAddr = aClass.getAnnotation(Plugin.class).registerAddr() ;
 
+                String host = null;
+                try {
+                    host = InetAddress.getLocalHost().getHostAddress();
+                } catch (UnknownHostException e) {
+                    System.out.println(e);
+                }
                 String detailInfo = aClass.getAnnotation(Plugin.class).detailInfo() ;
+                detailInfo = host+":8300|"+detailInfo;
 
                 this.pluginInfo = pluginInfo ;
                 this.detailInfo = detailInfo ;
